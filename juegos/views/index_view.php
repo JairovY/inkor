@@ -51,10 +51,15 @@
             <?php while ($game = $gamesResult->fetch_assoc()): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="<?php echo $game['image']; ?>" class="card-img-top" alt="<?php echo $game['title']; ?>">
+                        <a href="game_details.php?id=<?php echo $game['id']; ?>">
+                            <img src="<?php echo $game['image']; ?>" class="card-img-top"
+                                alt="<?php echo $game['title']; ?>">
+                        </a>
                         <div class="card-body">
                             <h5 class="card-title">
-                                <?php echo $game['title']; ?>
+                                <a href="game_details.php?id=<?php echo $game['id']; ?>">
+                                    <?php echo $game['title']; ?>
+                                </a>
                             </h5>
                             <p class="card-text">
                                 <?php echo $game['description']; ?>
