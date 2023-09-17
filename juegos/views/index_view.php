@@ -38,16 +38,12 @@
             </div>
         </form>
 
-        <div class="container mt-5">
-            <h2 class="mb-4 text-center">Listado completo de juegos</h2>
-
-            <?php
-            if ($searchValue) {
-                echo '<div class="text-center mb-4">';
-                echo '<a href="index.php" class="btn btn-secondary">Volver</a>';
-                echo '</div>';
-            }
-            ?>
+        <!-- Botón para volver (si se realizó una búsqueda) -->
+        <?php if ($showBackButton): ?>
+            <div class="text-center mb-4">
+                <a href="index.php" class="btn btn-secondary">Volver</a>
+            </div>
+        <?php endif; ?>
 
             <!-- Mostrar juegos en tarjetas de Bootstrap -->
             <div class="row">

@@ -15,6 +15,12 @@ if (isset($_GET['search'])) {
     $searchValue = $_GET['search'];
 }
 
+// Verificar si hay un valor de búsqueda y preparar el mensaje
+$showBackButton = false;
+if ($searchValue != '') {
+    $showBackButton = true;
+}
+
 // Consulta SQL con paginación
 $limit = 6; // Número de juegos por página
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
