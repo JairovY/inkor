@@ -1,5 +1,5 @@
 <footer class="mt-5 py-3 bg-dark text-white">
-    <div class="container">
+<footer class="mt-auto">
         <div class="row">
             <div class="col-md-4">
                 <h5>Sobre Nosotros</h5>

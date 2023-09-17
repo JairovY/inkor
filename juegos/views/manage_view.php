@@ -21,51 +21,53 @@
 </head>
 
 <body>
+    <div class="content-wrapper">
+        <div class="container mt-5">
+            <h1 class="mb-4 text-center">Administrar Juego</h1>
 
-    <div class="container mt-5">
-        <h1 class="mb-4 text-center">Administrar Juego</h1>
+            <form action="actions.php" method="post" name="gameForm" onsubmit="return validateForm()">
+                <input type="hidden" name="id" value="<?php echo $game['id']; ?>">
 
-        <form action="actions.php" method="post" name="gameForm" onsubmit="return validateForm()">
-            <input type="hidden" name="id" value="<?php echo $game['id']; ?>">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" class="form-control" id="title" name="title"
+                        value="<?php echo $game['title']; ?>" required>
+                </div>
 
-            <div class="form-group">
-                <label for="title">Título:</label>
-                <input type="text" class="form-control" id="title" name="title" value="<?php echo $game['title']; ?>"
-                    required>
-            </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea class="form-control" id="description" name="description"
+                        required><?php echo $game['description']; ?></textarea>
+                </div>
 
-            <div class="form-group">
-                <label for="description">Descripción:</label>
-                <textarea class="form-control" id="description" name="description"
-                    required><?php echo $game['description']; ?></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="image">URL de la imagen:</label>
+                    <input type="text" class="form-control" id="image" name="image"
+                        value="<?php echo $game['image']; ?>">
+                </div>
 
-            <div class="form-group">
-                <label for="image">URL de la imagen:</label>
-                <input type="text" class="form-control" id="image" name="image" value="<?php echo $game['image']; ?>">
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                <?php echo $game['id'] ? 'Actualizar' : 'Insertar'; ?> Juego
-            </button>
-        </form>
-
-        <?php if ($game['id']): ?>
-            <form action="actions.php" method="post" class="mt-3">
-                <input type="hidden" name="delete_id" value="<?php echo $game['id']; ?>">
-                <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')">Eliminar Juego</button>
+                <button type="submit" class="btn btn-primary">
+                    <?php echo $game['id'] ? 'Actualizar' : 'Insertar'; ?> Juego
+                </button>
             </form>
-        <?php endif; ?>
 
-        <a href="index.php" class="btn btn-secondary mt-4">Regresar a la lista de juegos</a>
+            <?php if ($game['id']): ?>
+                <form action="actions.php" method="post" class="mt-3">
+                    <input type="hidden" name="delete_id" value="<?php echo $game['id']; ?>">
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')">Eliminar Juego</button>
+                </form>
+            <?php endif; ?>
+
+            <a href="index.php" class="btn btn-secondary mt-4">Regresar a la lista de juegos</a>
+        </div>
+
+        <!-- Scripts de Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </div>
-
-    <!-- Scripts de Bootstrap -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <?php include 'views/footer_view.php'; ?>         
+    <?php include 'views/footer_view.php'; ?>
 </body>
 
 </html>
