@@ -15,10 +15,10 @@
 
         <!-- Mensaje de error en caso de fallo de registro -->
         <?php if (isset($_SESSION['login_error']) && !empty($_SESSION['login_error'])): ?>
-    <div class="alert alert-danger">
-        <?php echo $_SESSION['login_error']; ?>
-    </div>
-<?php endif; ?>
+            <div class="alert alert-danger">
+                <?php echo $_SESSION['login_error']; ?>
+            </div>
+        <?php endif; ?>
 
 
         <form action="register.php" method="post" class="w-50 mx-auto">

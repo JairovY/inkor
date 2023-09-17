@@ -46,54 +46,54 @@
             </div>
         <?php endif; ?>
 
-            <!-- Mostrar juegos en tarjetas de Bootstrap -->
-            <div class="row">
-                <?php while ($game = $gamesResult->fetch_assoc()): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="<?php echo $game['image']; ?>" class="card-img-top" alt="<?php echo $game['title']; ?>">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <?php echo $game['title']; ?>
-                                </h5>
-                                <p class="card-text">
-                                    <?php echo $game['description']; ?>
-                                </p>
-                                <?php if ($isLoggedIn): ?>
-                                    <a href="manage.php?id=<?php echo $game['id']; ?>" class="btn btn-primary">Editar</a>
-                                <?php endif; ?>
-                            </div>
+        <!-- Mostrar juegos en tarjetas de Bootstrap -->
+        <div class="row">
+            <?php while ($game = $gamesResult->fetch_assoc()): ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<?php echo $game['image']; ?>" class="card-img-top" alt="<?php echo $game['title']; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <?php echo $game['title']; ?>
+                            </h5>
+                            <p class="card-text">
+                                <?php echo $game['description']; ?>
+                            </p>
+                            <?php if ($isLoggedIn): ?>
+                                <a href="manage.php?id=<?php echo $game['id']; ?>" class="btn btn-primary">Editar</a>
+                            <?php endif; ?>
                         </div>
                     </div>
-                <?php endwhile; ?>
-            </div>
-
-            <!-- Enlaces de paginación -->
-            <div class="mt-4">
-                <?php
-                for ($i = 1; $i <= $pages; $i++) {
-                    echo "<a href='index.php?page=$i' class='btn btn-secondary'>$i</a> ";
-                }
-                ?>
-            </div>
-
-            <?php if ($isLoggedIn): ?>
-                <a href="manage.php" class="btn btn-success mt-4">Agregar nuevo juego</a>
-            <?php endif; ?>
-
+                </div>
+            <?php endwhile; ?>
         </div>
 
-        <!-- Scripts de Bootstrap -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Enlaces de paginación -->
+        <div class="mt-4">
+            <?php
+            for ($i = 1; $i <= $pages; $i++) {
+                echo "<a href='index.php?page=$i' class='btn btn-secondary'>$i</a> ";
+            }
+            ?>
+        </div>
 
-    </body>
-    <footer class="mt-5 py-3 text-center">
-        <p>&copy;
-            <?php echo date("Y"); ?> JairovY. Todos los derechos reservados.
-        </p>
-    </footer>
+        <?php if ($isLoggedIn): ?>
+            <a href="manage.php" class="btn btn-success mt-4">Agregar nuevo juego</a>
+        <?php endif; ?>
+
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+<footer class="mt-5 py-3 text-center">
+    <p>&copy;
+        <?php echo date("Y"); ?> JairovY. Todos los derechos reservados.
+    </p>
+</footer>
 
 </html>
 

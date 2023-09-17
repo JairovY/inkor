@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" </head>
 
 <body>
 
@@ -16,10 +15,10 @@
         <!-- Mensaje de error en caso de fallo de inicio de sesión -->
         <?php if (isset($loginError)): ?>
             <?php if (isset($_SESSION['login_error']) && !empty($_SESSION['login_error'])): ?>
-    <div class="alert alert-danger">
-        <?php echo $_SESSION['login_error']; ?>
-    </div>
-<?php endif; ?>
+                <div class="alert alert-danger">
+                    <?php echo $_SESSION['login_error']; ?>
+                </div>
+            <?php endif; ?>
 
         <?php endif; ?>
 
@@ -49,4 +48,3 @@
 </body>
 
 </html>
-

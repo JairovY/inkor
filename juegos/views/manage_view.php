@@ -53,7 +53,8 @@
         <?php if ($game['id']): ?>
             <form action="actions.php" method="post" class="mt-3">
                 <input type="hidden" name="delete_id" value="<?php echo $game['id']; ?>">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')">Eliminar Juego</button>
+                <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')">Eliminar Juego</button>
             </form>
         <?php endif; ?>
 
