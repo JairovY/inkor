@@ -1,0 +1,13 @@
+/* Estilo base de la tarjeta */
+.card {
+    background-color: #f8f9fa; /* Color original de la tarjeta */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Transiciones suaves para los tres efectos */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre la tarjeta */
+}
+
+/* Efectos al pasar el cursor sobre la tarjeta */
+.card:hover {
+    background-color: #e9ecef; /* Cambio de color al pasar el cursor */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra al pasar el cursor */
+    transform: scale(1.05); /* Aumenta el tamaño de la tarjeta en un 5% */
+}
