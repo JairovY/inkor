@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+include 'db.php'; // Conexión a la base de datos
+?>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +20,26 @@
 
         <!-- Aquí puedes hacer la consulta a la base de datos para obtener los detalles del juego usando el ID -->
 
-        
+        <?php
+        if (isset($_GET['id'])) { // Verifica si se ha proporcionado un ID en la URL
+            $gameId = $_GET['id'];
+
+            // Prepara la consulta SQL para obtener los detalles del juego usando el ID
+            $stmt = $conn->prepare("SELECT * FROM games WHERE id = ?");
+            $stmt->bind_param("i", $gameId); // Vincula el ID del juego a la consulta
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($game = $result->fetch_assoc()) {
+                // Los detalles del juego están ahora en la variable $game
+            } else {
+                echo "Juego no encontrado.";
+            }
+
+            $stmt->close();
+        }
+        ?>
+
 
         <div class="row">
             <div class="col-md-6">
@@ -24,8 +48,12 @@
             </div>
             <div class="col-md-6">
                 <!-- Detalles del juego -->
-                <h2><?php echo $game['title']; ?></h2>
-                <p><?php echo $game['description']; ?></p>
+                <h2>
+                    <?php echo $game['title']; ?>
+                </h2>
+                <p>
+                    <?php echo $game['description']; ?>
+                </p>
                 <!-- Aquí puedes agregar más detalles del juego como género, fecha de lanzamiento, etc. -->
             </div>
         </div>
@@ -42,7 +70,9 @@
 
 </body>
 <footer class="mt-5 py-3 text-center">
-    <p>&copy; <?php echo date("Y"); ?> JairovY. Todos los derechos reservados.</p>
+    <p>&copy;
+        <?php echo date("Y"); ?> JairovY. Todos los derechos reservados.
+    </p>
 </footer>
 
 </html>

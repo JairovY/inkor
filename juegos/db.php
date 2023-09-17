@@ -6,7 +6,8 @@ $database = "gameDB";
 
 $conn = new mysqli($server, $username, $password, $database);
 
-function isUserLoggedIn() {
+function isUserLoggedIn()
+{
     return isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
 }
 
