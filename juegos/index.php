@@ -1,6 +1,7 @@
 <?php
-// Incluimos el backend del archivo
+// Inclusión del archivo que contiene la lógica del backend para la página principal.
 include 'logic/index_logic.php';
-// Incluimos el Frontend del archivo
+
+// Inclusión del archivo que contiene la presentación (frontend) para la página principal.
 include 'views/index_view.php';
 ?>

@@ -1,20 +1,24 @@
 <?php
+// Inicio de la sesión para poder utilizar y almacenar variables de sesión.
 session_start();
-include 'db.php'; // Conexión a la base de datos
 
-// Insertar un juego
+// Inclusión del archivo que contiene la configuración y conexión a la base de datos.
+include 'db.php';
+
+// Insertar un juego en la base de datos.
 if (isset($_POST['title']) && empty($_POST['id'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $image_url = $_POST['image'];
 
-    // Validación en el lado del servidor para la URL de la imagen
+    // Validación en el lado del servidor para la URL de la imagen.
     if (!filter_var($image_url, FILTER_VALIDATE_URL)) {
         $_SESSION['message'] = "URL de imagen no válida.";
         header('Location: manage.php');
         exit;
     }
 
+    // Preparación y ejecución de la consulta SQL para insertar un nuevo juego.
     $stmt = $conn->prepare("INSERT INTO games (title, description, image) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $title, $description, $image_url);
     if ($stmt->execute()) {
@@ -25,20 +29,21 @@ if (isset($_POST['title']) && empty($_POST['id'])) {
     $stmt->close();
 }
 
-// Actualizar un juego
+// Actualizar un juego existente en la base de datos.
 if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['title'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];
     $description = $_POST['description'];
     $image_url = $_POST['image'];
 
-    // Validación en el lado del servidor para la URL de la imagen
+    // Validación en el lado del servidor para la URL de la imagen.
     if (!filter_var($image_url, FILTER_VALIDATE_URL)) {
         $_SESSION['message'] = "URL de imagen no válida.";
         header('Location: manage.php?id=' . $id);
         exit;
     }
 
+    // Preparación y ejecución de la consulta SQL para actualizar un juego existente.
     $stmt = $conn->prepare("UPDATE games SET title = ?, description = ?, image = ? WHERE id = ?");
     $stmt->bind_param("sssi", $title, $description, $image_url, $id);
     if ($stmt->execute()) {
@@ -49,10 +54,11 @@ if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['title'])) {
     $stmt->close();
 }
 
-// Eliminar un juego
+// Eliminar un juego de la base de datos.
 if (isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
 
+    // Preparación y ejecución de la consulta SQL para eliminar un juego.
     $stmt = $conn->prepare("DELETE FROM games WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -63,5 +69,6 @@ if (isset($_POST['delete_id'])) {
     $stmt->close();
 }
 
-header('Location: index.php'); // Redirigir al usuario a la página principal después de realizar una acción
+// Redirige al usuario a la página principal después de realizar una acción.
+header('Location: index.php');
 ?>

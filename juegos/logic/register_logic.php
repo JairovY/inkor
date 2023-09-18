@@ -1,38 +1,43 @@
 <?php
+// Inicio de la sesión para poder utilizar y almacenar variables de sesión.
 session_start();
-include 'db.php'; // Conexión a la base de datos
 
+// Inclusión del archivo que contiene la configuración y conexión a la base de datos.
+include 'db.php';
+
+// Establece una nueva conexión a la base de datos.
 $conn = new mysqli($server, $username, $password, $database);
 
+// Verifica si hay algún error en la conexión a la base de datos.
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Verificar si el formulario ha sido enviado
+// Verificar si el formulario ha sido enviado.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usernameInput = $_POST['username'];
     $passwordInput = $_POST['password'];
     $emailInput = $_POST['email'];
 
-    // Validaciones
+    // Inicialización del arreglo para almacenar errores de validación.
     $errors = [];
 
-    // Validar nombre de usuario
+    // Validar nombre de usuario.
     if (strlen($usernameInput) < 5 || strlen($usernameInput) > 20 || !preg_match("/^[a-zA-Z0-9]*$/", $usernameInput)) {
         $errors[] = "El nombre de usuario debe tener entre 5 y 20 caracteres y solo puede contener letras y números.";
     }
 
-    // Validar contraseña
+    // Validar contraseña.
     if (strlen($passwordInput) < 8 || !preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $passwordInput)) {
         $errors[] = "La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.";
     }
 
-    // Validar correo electrónico
+    // Validar correo electrónico.
     if (!filter_var($emailInput, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Introduce un correo electrónico válido.";
     }
 
-    // Si no hay errores, procesar el registro
+    // Si no hay errores, procesar el registro.
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
         $stmt->bind_param("ss", $usernameInput, $emailInput);
@@ -46,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $errors[] = "El correo electrónico ya está en uso.";
             }
         } else {
+            // Si el usuario no existe, se registra en la base de datos.
             $hashedPassword = password_hash($passwordInput, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $usernameInput, $hashedPassword, $emailInput);
@@ -55,9 +61,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
     } else {
-        // Aquí puedes manejar los errores, por ejemplo, mostrarlos en la página de registro
+        // Aquí puedes manejar los errores, por ejemplo, mostrarlos en la página de registro.
     }
 }
 
+// Cerrar la conexión a la base de datos.
 $conn->close();
 ?>
+
