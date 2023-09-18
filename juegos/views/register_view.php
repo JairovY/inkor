@@ -15,6 +15,15 @@
         <div class="container mt-5">
             <h1 class="mb-4 text-center">Registrarse</h1>
 
+            <!-- Mostrar errores de validación -->
+            <?php if (isset($errors) && !empty($errors)): ?>
+                <div class="alert alert-danger">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo $error; ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <form action="register.php" method="post" class="w-50 mx-auto">
                 <div class="form-group">
                     <label for="username">Nombre de usuario:</label>
@@ -27,7 +36,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Correo Electrónico:</label>
+                    <label for="email">Correo electrónico:</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
 

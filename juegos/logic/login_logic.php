@@ -8,6 +8,15 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Función para registrar un intento fallido de inicio de sesión
+function recordFailedLogin($username, $conn) {
+    $ip_address = $_SERVER['REMOTE_ADDR']; // Obtener la dirección IP del usuario
+    $stmt = $conn->prepare("INSERT INTO failed_logins (username, IP_address) VALUES (?, ?)");
+    $stmt->bind_param("ss", $username, $ip_address);
+    $stmt->execute();
+    $stmt->close();
+}
+
 // Inicializar variables para el mensaje de error y el estado de inicio de sesión
 $loginError = "";
 $isLoggedIn = false;
@@ -50,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($timeRemaining)) {
             exit;
         } else {
             $loginError = "Contraseña incorrecta";
+            recordFailedLogin($usernameInput, $conn);
             // Incrementar el contador de intentos fallidos
             if (!isset($_SESSION['loginAttempts'])) {
                 $_SESSION['loginAttempts'] = 0;
@@ -59,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($timeRemaining)) {
         }
     } else {
         $loginError = "Usuario no encontrado";
+        recordFailedLogin($usernameInput, $conn);
         // Incrementar el contador de intentos fallidos
         if (!isset($_SESSION['loginAttempts'])) {
             $_SESSION['loginAttempts'] = 0;
