@@ -19,7 +19,7 @@ function recordFailedLogin($username, $conn) {
 
 // Función para verificar el captcha
 function verifyCaptcha($recaptchaResponse) {
-    $secretKey = "TU_CLAVE_SECRETA";
+    $secretKey = "6LdBODMoAAAAAHfOJs0tuSd5IEbptJL-0Z92Apfn";
     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $recaptchaResponse);
     $responseData = json_decode($verifyResponse);
     return $responseData->success;
