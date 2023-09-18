@@ -19,6 +19,30 @@
             <?php if (isset($loginError) && !empty($loginError)): ?>
                 <div class="alert alert-danger">
                     <?php echo $loginError; ?>
+                    <?php if (isset($timeRemaining) && $timeRemaining > 0): ?>
+                        <div id="countdown">Tiempo restante: <span id="minutes"></span>:<span id="seconds"></span></div>
+                        <script>
+                            var timeRemaining = <?php echo $timeRemaining; ?>;
+                            var minutesElem = document.getElementById('minutes');
+                            var secondsElem = document.getElementById('seconds');
+
+                            function updateCountdown() {
+                                var minutes = Math.floor(timeRemaining / 60);
+                                var seconds = timeRemaining % 60;
+                                minutesElem.textContent = String(minutes).padStart(2, '0');
+                                secondsElem.textContent = String(seconds).padStart(2, '0');
+                                timeRemaining--;
+
+                                if (timeRemaining < 0) {
+                                    clearInterval(interval);
+                                    document.getElementById('countdown').textContent = "Puedes intentar iniciar sesión nuevamente.";
+                                }
+                            }
+
+                            var interval = setInterval(updateCountdown, 1000);
+                            updateCountdown(); // Llamar a la función una vez al inicio para mostrar el tiempo inicial
+                        </script>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
 
