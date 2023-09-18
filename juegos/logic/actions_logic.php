@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-include 'db.php';
+include('C:\xampp\htdocs\juegos\db.php');
+
 
 // Insertar un juego en la base de datos.
 if (isset($_POST['title']) && empty($_POST['id'])) {

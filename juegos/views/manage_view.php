@@ -8,6 +8,8 @@
     
     <!-- Enlace a la hoja de estilos de Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <script>
         // Validación del formulario en el lado del cliente
@@ -29,7 +31,7 @@
             <h1 class="mb-4 text-center">Administrar Juego</h1>
 
             <!-- Formulario para agregar o actualizar un juego -->
-            <form action="actions.php" method="post" name="gameForm" onsubmit="return validateForm()">
+            <form action="logic/actions_logic.php" method="post" name="gameForm" onsubmit="return validateForm()">
                 <input type="hidden" name="id" value="<?php echo $game['id']; ?>">
 
                 <div class="form-group">
@@ -57,7 +59,7 @@
 
             <!-- Opción para eliminar un juego (visible solo si se está editando un juego existente) -->
             <?php if ($game['id']): ?>
-                <form action="actions.php" method="post" class="mt-3">
+                <form action="logic/actions_logic.php" method="post" class="mt-3">
                     <input type="hidden" name="delete_id" value="<?php echo $game['id']; ?>">
                     <button type="submit" class="btn btn-danger"
                         onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')">Eliminar Juego</button>
