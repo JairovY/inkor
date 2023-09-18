@@ -1,8 +1,6 @@
 <?php
-// Inicio de la sesión para poder utilizar y almacenar variables de sesión.
 session_start();
 
-// Inclusión del archivo que contiene la configuración y conexión a la base de datos.
 include 'db.php';
 
 // Insertar un juego en la base de datos.

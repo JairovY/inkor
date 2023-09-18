@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Metadatos básicos y configuración de visualización para dispositivos móviles -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrar Juego</title>
