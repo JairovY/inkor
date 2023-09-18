@@ -32,6 +32,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Registrarse</button>
+                <a href="index.php" class="btn btn-secondary ml-2">Página Principal</a>
             </form>
 
             <p class="text-center mt-3">¿Ya tienes cuenta? <a href="login.php">Inicia sesión aquí</a></p>

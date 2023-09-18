@@ -58,6 +58,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                <a href="index.php" class="btn btn-secondary ml-2">Página Principal</a>
             </form>
 
             <p class="text-center mt-3">¿No tienes cuenta? <a href="register.php">Regístrate aquí</a></p>
