@@ -6,70 +6,33 @@ include 'db.php'; // Conexión a la base de datos
 $loginError = "";
 $isLoggedIn = false;
 
-// Inicializa el contador de intentos fallidos si no existe
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-}
+// Procesar el formulario de inicio de sesión
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $usernameInput = $_POST['username'];
+    $passwordInput = $_POST['password'];
 
-// Si hay más de 3 intentos fallidos, bloquea el inicio de sesión durante 10 minutos
-if ($_SESSION['login_attempts'] > 3 && (time() - $_SESSION['last_attempt_time']) < 600) {
-    $timeSinceLastAttempt = time() - $_SESSION['last_attempt_time'];
-    $timeRemaining = 600 - $timeSinceLastAttempt;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $usernameInput);
+    $stmt->execute();
 
-    $minutes = floor($timeRemaining / 60);
-    $seconds = $timeRemaining % 60;
-
-    $loginError = "Has superado el número máximo de intentos. Por favor, espera $minutes minutos y $seconds segundos antes de intentar de nuevo.";
-} else {
-    if (isset($_POST['g-recaptcha-response'])) {
-        $captcha = $_POST['g-recaptcha-response'];
-
-        // Verificar el captcha
-        $secretKey = "6LdBODMoAAAAAHfOJs0tuSd5IEbptJL-0Z92Apfn";
-        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha");
-        $responseKeys = json_decode($response, true);
-
-        if (intval($responseKeys["success"]) !== 1) {
-            $loginError = "Por favor, verifica el captcha.";
+    $result = $stmt->get_result();
+    if ($user = $result->fetch_assoc()) {
+        // Verificar la contraseña
+        if (password_verify($passwordInput, $user['password'])) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            $isLoggedIn = true;
+            header("Location: index.php");
+            exit;
         } else {
-            // Procesar el formulario de inicio de sesión
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $usernameInput = $_POST['username'];
-                $passwordInput = $_POST['password'];
-
-                $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-                $stmt->bind_param("s", $usernameInput);
-                $stmt->execute();
-
-                $result = $stmt->get_result();
-                if ($user = $result->fetch_assoc()) {
-                    // Verificar la contraseña
-                    if (password_verify($passwordInput, $user['password'])) {
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['username'] = $user['username'];
-                        $_SESSION['role'] = $user['role'];
-                        $isLoggedIn = true;
-                        header("Location: index.php");
-                        exit;
-                    } else {
-                        $loginError = "Contraseña incorrecta";
-                        // Incrementa el contador de intentos fallidos y registra el tiempo del último intento
-                        $_SESSION['login_attempts']++;
-                        $_SESSION['last_attempt_time'] = time();
-                    }
-                } else {
-                    $loginError = "Usuario no encontrado";
-                    // Incrementa el contador de intentos fallidos y registra el tiempo del último intento
-                    $_SESSION['login_attempts']++;
-                    $_SESSION['last_attempt_time'] = time();
-                }
-
-                $stmt->close();
-                $conn->close();
-            }
+            $loginError = "Contraseña incorrecta";
         }
     } else {
-        $loginError = "Por favor, verifica el captcha.";
+        $loginError = "Usuario no encontrado";
     }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
