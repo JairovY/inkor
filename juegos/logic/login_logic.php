@@ -13,11 +13,17 @@ if (!isset($_SESSION['login_attempts'])) {
 
 // Si hay más de 3 intentos fallidos, bloquea el inicio de sesión durante 10 minutos
 if ($_SESSION['login_attempts'] > 3 && (time() - $_SESSION['last_attempt_time']) < 600) {
-    $loginError = "Has superado el número máximo de intentos. Por favor, espera 10 minutos antes de intentar de nuevo.";
+    $timeSinceLastAttempt = time() - $_SESSION['last_attempt_time'];
+    $timeRemaining = 600 - $timeSinceLastAttempt;
+
+    $minutes = floor($timeRemaining / 60);
+    $seconds = $timeRemaining % 60;
+
+    $loginError = "Has superado el número máximo de intentos. Por favor, espera $minutes minutos y $seconds segundos antes de intentar de nuevo.";
 } else {
     if (isset($_POST['g-recaptcha-response'])) {
         $captcha = $_POST['g-recaptcha-response'];
-        
+
         // Verificar el captcha
         $secretKey = "6LdBODMoAAAAAHfOJs0tuSd5IEbptJL-0Z92Apfn";
         $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha");
