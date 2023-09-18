@@ -8,6 +8,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body>
@@ -56,6 +58,8 @@
                     <label for="password">Contraseña:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
+
+                <div class="g-recaptcha" data-sitekey="6LdBODMoAAAAACmTpPR5s01aewC-6qdq0AK_bVgW"></div>
 
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                 <a href="index.php" class="btn btn-secondary ml-2">Página Principal</a>

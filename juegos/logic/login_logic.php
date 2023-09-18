@@ -17,6 +17,14 @@ function recordFailedLogin($username, $conn) {
     $stmt->close();
 }
 
+// Función para verificar el captcha
+function verifyCaptcha($recaptchaResponse) {
+    $secretKey = "TU_CLAVE_SECRETA";
+    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $recaptchaResponse);
+    $responseData = json_decode($verifyResponse);
+    return $responseData->success;
+}
+
 // Inicializar variables para el mensaje de error y el estado de inicio de sesión
 $loginError = "";
 $isLoggedIn = false;
@@ -42,23 +50,37 @@ if (isset($_SESSION['loginAttempts']) && $_SESSION['loginAttempts'] >= $maxAttem
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($timeRemaining)) {
     $usernameInput = $_POST['username'];
     $passwordInput = $_POST['password'];
+    $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $usernameInput);
-    $stmt->execute();
+    if (!verifyCaptcha($recaptchaResponse)) {
+        $loginError = "Verificación de captcha fallida. Por favor, inténtalo de nuevo.";
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $usernameInput);
+        $stmt->execute();
 
-    $result = $stmt->get_result();
-    if ($user = $result->fetch_assoc()) {
-        // Verificar la contraseña
-        if (password_verify($passwordInput, $user['password'])) {
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-            $isLoggedIn = true;
-            header("Location: index.php");
-            exit;
+        $result = $stmt->get_result();
+        if ($user = $result->fetch_assoc()) {
+            // Verificar la contraseña
+            if (password_verify($passwordInput, $user['password'])) {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                $isLoggedIn = true;
+                header("Location: index.php");
+                exit;
+            } else {
+                $loginError = "Contraseña incorrecta";
+                recordFailedLogin($usernameInput, $conn);
+                // Incrementar el contador de intentos fallidos
+                if (!isset($_SESSION['loginAttempts'])) {
+                    $_SESSION['loginAttempts'] = 0;
+                    $_SESSION['firstAttempt'] = time();
+                }
+                $_SESSION['loginAttempts']++;
+            }
         } else {
-            $loginError = "Contraseña incorrecta";
+            $loginError = "Usuario no encontrado";
             recordFailedLogin($usernameInput, $conn);
             // Incrementar el contador de intentos fallidos
             if (!isset($_SESSION['loginAttempts'])) {
@@ -67,21 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($timeRemaining)) {
             }
             $_SESSION['loginAttempts']++;
         }
-    } else {
-        $loginError = "Usuario no encontrado";
-        recordFailedLogin($usernameInput, $conn);
-        // Incrementar el contador de intentos fallidos
-        if (!isset($_SESSION['loginAttempts'])) {
-            $_SESSION['loginAttempts'] = 0;
-            $_SESSION['firstAttempt'] = time();
-        }
-        $_SESSION['loginAttempts']++;
-    }
 
-    $stmt->close();
+        $stmt->close();
+    }
 }
 
 $conn->close();
 ?>
+
 
 
